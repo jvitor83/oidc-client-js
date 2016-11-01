@@ -45,9 +45,10 @@ export default class CordovaPopupWindow {
                 return this._error("InAppBrowser plugin not found")
             }
             if( !window.inAppBrowserXwalk ) {
+                Log.info("CordovaPopupWindow.navigate > inAppBrowser");
                 this._popup = cordova.InAppBrowser.open(params.url, this.target, this.features);
             } else {
-                Log.info("CordovaPopupWindow.navigate > XWalk");
+                Log.info("CordovaPopupWindow.navigate > inAppBrowserXwalk");
                 var optionsXwalk = {
                     toolbarColor: '#FFFFFF', // Background color of the toolbar in #RRGGBB
                     toolbarHeight: '40',
