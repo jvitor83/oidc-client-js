@@ -70,6 +70,10 @@ export default class CordovaPopupWindow {
             } else {
                 this._error("Error opening popup window");
             }
+            if( window.inAppBrowserXwalk ) {
+                Log.info("showing popup");
+                this._popup.show();
+            }
         }
         return this.promise;
     }
