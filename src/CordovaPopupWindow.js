@@ -24,9 +24,10 @@ export default class CordovaPopupWindow {
     }
 
     _isInAppBrowserInstalled(cordovaMetadata) {
-        return ["cordova-plugin-inappbrowser", "cordova-plugin-inappbrowser.inappbrowser", "org.apache.cordova.inappbrowser"].some(function (name) {
-            return cordovaMetadata.hasOwnProperty(name)
-        })
+        // return ["cordova-plugin-inappbrowser", "cordova-plugin-inappbrowser.inappbrowser", "org.apache.cordova.inappbrowser"].some(function (name) {
+        //     return cordovaMetadata.hasOwnProperty(name)
+        // })
+        return true;
     }
     
     navigate(params) {
@@ -43,7 +44,20 @@ export default class CordovaPopupWindow {
             if (this._isInAppBrowserInstalled(cordovaMetadata) === false) {
                 return this._error("InAppBrowser plugin not found")
             }
-            this._popup = cordova.InAppBrowser.open(params.url, this.target, this.features);
+            if( !window.inAppBrowserXwalk ) {
+                this._popup = cordova.InAppBrowser.open(params.url, this.target, this.features);
+            } else {
+                Log.info("CordovaPopupWindow.navigate > XWalk");
+                var optionsXwalk = {
+                    toolbarColor: '#FFFFFF', // Background color of the toolbar in #RRGGBB
+                    toolbarHeight: '40',
+                    closeButtonText: 'x',
+                    closeButtonSize: '25',
+                    closeButtonColor: '#FF0000',
+                    openHidden: false
+                  };
+                this._popup = window.inAppBrowserXwalk.open(params.url, optionsXwalk);
+            }
             if (this._popup) {
                 Log.info("popup successfully created");
                 
